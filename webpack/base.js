@@ -2,6 +2,8 @@ const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { resolve } = require("path");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -11,8 +13,11 @@ module.exports = {
       {
         // 拡張子 .ts の場合
         test: /\.ts$/,
+        exclude: /node_modules/,
         // TypeScript をコンパイルする
-        use: 'ts-loader',
+        use: {
+          loader: "ts-loader"
+        }
       },
       {
         test: /\.js$/,
@@ -42,5 +47,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./index.html"
     })
-  ]
+  ],
+  resolve: {
+    // 拡張子を配列で指定
+    extensions: [
+      '.ts', '.js',
+    ],
+  },
 };

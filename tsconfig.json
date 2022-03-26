@@ -14,8 +14,9 @@
     ],
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["src/*"]
     },
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "baseUrl": "./"
   }
 }
