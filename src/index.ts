@@ -2,11 +2,14 @@ import Phaser from 'phaser';
 import logoImg from '~/assets/logo.png';
 import prayerImg from '~/assets/prayer.png';
 import {CofigConstants} from "~/consts/CofigConstants";
+import ImageManager from "~/loaders/ImageManager";
+import Prayer from "~/characters/Prayer";
 
 class MyGame extends Phaser.Scene {
     // private sprite: Phaser.GameObjects.Sprite;
-    private prayer: Phaser.GameObjects.Image;
+    // private prayer: Phaser.GameObjects.Image;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+    private prayer: Prayer;
 
     constructor() {
         super('sample-scene');
@@ -14,15 +17,15 @@ class MyGame extends Phaser.Scene {
 
     preload() {
         this.load.image('logo', logoImg);
-        this.load.image('prayer', prayerImg);
-
+        // this.load.image('prayer', prayerImg);
+        ImageManager.onPreload(this);
     }
 
     create() {
         // this.sprite = this.add.sprite(200, 300, 'prayer');
         // this.sprite.setScale(0.5);
-        this.prayer = this.add.image(400, 150, 'prayer').setScale(1).setAngle(-40);
-
+        // this.prayer = this.add.image(400, 150, ImageManager.prayer.getKey()).setScale(1).setAngle(-40);
+        this.prayer = new Prayer(this)
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.add.rectangle(3 * CofigConstants.displayWidth / 4 - 20, 20, CofigConstants.displayWidth / 2, 20, 0xff0000);
@@ -41,32 +44,32 @@ class MyGame extends Phaser.Scene {
         //     loop: -1
         // });
 
-
-        this.tweens.add({
-            targets: this.prayer,
-            angle: 40,
-            duration: 700,
-            yoyo: true,
-            loop: -1
-        });
+        //
+        // this.tweens.add({
+        //     targets: this.prayer,
+        //     angle: 40,
+        //     duration: 700,
+        //     yoyo: true,
+        //     loop: -1
+        // });
     }
 
     update() {
         if (this.cursors.left.isDown)
         {
-            this.prayer.setX(this.prayer.x - 1);
+            this.prayer.goLeft();
         }
         if (this.cursors.right.isDown)
         {
-            this.prayer.setX(this.prayer.x + 1);
+            this.prayer.goRight();
         }
         if (this.cursors.up.isDown)
         {
-            this.prayer.setY(this.prayer.y - 1);
+            this.prayer.goUp();
         }
         if (this.cursors.down.isDown)
         {
-            this.prayer.setY(this.prayer.y + 1);
+            this.prayer.goDown();
         }
         // this.sprite.angle += 1;
 
