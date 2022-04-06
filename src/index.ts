@@ -32,15 +32,15 @@ class MyGame extends Phaser.Scene {
         {
             this.prayer.goLeft();
         }
-        if (this.cursors.right.isDown)
+        if (this.cursors.right.isDown && !this.prayer.isHitRight(this.enemy))
         {
             this.prayer.goRight();
         }
-        if (this.cursors.up.isDown)
+        if (this.cursors.up.isDown && !this.prayer.isHitTop(this.enemy))
         {
             this.prayer.goUp();
         }
-        if (this.cursors.down.isDown)
+        if (this.cursors.down.isDown && !this.prayer.isHitBottom(this.enemy))
         {
             this.prayer.goDown();
         }
