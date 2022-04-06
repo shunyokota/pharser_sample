@@ -9,6 +9,7 @@ import Enemy from "~/characters/Enemy";
 class MyGame extends Phaser.Scene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private prayer: Prayer;
+    private enemy: Enemy;
 
     constructor() {
         super('sample-scene');
@@ -20,14 +21,14 @@ class MyGame extends Phaser.Scene {
 
     create() {
         this.prayer = new Prayer(this);
-        new Enemy(this)
+        this.enemy = new Enemy(this)
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.add.rectangle(3 * CofigConstants.displayWidth / 4 - 20, 20, CofigConstants.displayWidth / 2, 20, 0xff0000);
     }
 
     update() {
-        if (this.cursors.left.isDown)
+        if (this.cursors.left.isDown && !this.prayer.isHitLeft(this.enemy))
         {
             this.prayer.goLeft();
         }
@@ -42,6 +43,9 @@ class MyGame extends Phaser.Scene {
         if (this.cursors.down.isDown)
         {
             this.prayer.goDown();
+        }
+        if (this.prayer.isHit(this.enemy)) {
+            console.log('hit');
         }
     }
 

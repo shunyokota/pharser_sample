@@ -1,22 +1,26 @@
-import ImageLoader from "~/loaders/ImageLoader";
 import Phaser from "phaser";
+import GameObject from "~/gameObjects/GameObject";
 
-export default abstract class Character {
+export default abstract class Character extends GameObject{
     protected image: Phaser.GameObjects.Image;
 
     public goRight() {
-        this.image.setX(this.image.x + 1);
+        this.x++;
+        this.image.setX(this.x);
     }
 
     public goLeft() {
-        this.image.setX(this.image.x - 1);
+        this.x--;
+        this.image.setX(this.x);
     }
 
     public goUp() {
-        this.image.setY(this.image.y - 1);
+        this.y--;
+        this.image.setY(this.y);
     }
 
     public goDown() {
-        this.image.setY(this.image.y + 1);
+        this.y++;
+        this.image.setY(this.y);
     }
 }

@@ -5,8 +5,8 @@ import ImageManager from "~/loaders/ImageManager";
 export default class Prayer extends Character {
 
     public constructor(scene: Phaser.Scene) {
-        super();
-        this.image = scene.add.image(400, 150, ImageManager.prayer.getKey()).setScale(1).setAngle(-40);
+        super(400, 150, 50, 50);
+        this.image = scene.add.image(400, 150, ImageManager.prayer.getKey()).setDisplaySize(50, 50).setAngle(-40);
 
         scene.tweens.add({
             targets: this.image,
