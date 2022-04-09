@@ -22,21 +22,33 @@ export default abstract class Character extends GameObject{
     }
 
     public goRight() {
+        if (this.isHitSomeOnRight()) {
+            return;
+        }
         this.x++;
         this.image.setX(this.x);
     }
 
     public goLeft() {
+        if (this.isHitSomeOnLeft()) {
+            return;
+        }
         this.x--;
         this.image.setX(this.x);
     }
 
     public goUp() {
+        if (this.isHitSomeOnTop()) {
+            return;
+        }
         this.y--;
         this.image.setY(this.y);
     }
 
     public goDown() {
+        if (this.isHitSomeOnBottom()) {
+            return;
+        }
         this.y++;
         this.image.setY(this.y);
     }
