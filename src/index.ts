@@ -5,11 +5,17 @@ import {CofigConstants} from "~/consts/CofigConstants";
 import ImageManager from "~/loaders/ImageManager";
 import Prayer from "~/characters/Prayer";
 import Enemy from "~/characters/Enemy";
+import Rectangle = Phaser.GameObjects.Rectangle;
+import Parameters from "~/Parameters";
+import FrameCounter from "~/frame/FrameCounter";
+import Wall from "~/things/Wall";
 
 class MyGame extends Phaser.Scene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private prayer: Prayer;
     private enemy: Enemy;
+    private parameters: Parameters;
+    private tokBar: Rectangle;
 
     constructor() {
         super('sample-scene');
@@ -22,9 +28,15 @@ class MyGame extends Phaser.Scene {
     create() {
         this.prayer = new Prayer(this);
         this.enemy = new Enemy(this)
+        new Wall(this);
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.parameters = new Parameters();
 
-        this.add.rectangle(3 * CofigConstants.displayWidth / 4 - 20, 20, CofigConstants.displayWidth / 2, 20, 0xff0000);
+        this.tokBar = this.add.rectangle(3 * CofigConstants.displayWidth / 4 - 20, 20, 0, 20, 0xff0000).setScrollFactor(0);
+        // new Rectangle(this, 3 * CofigConstants.displayWidth / 4 - 20, 20, CofigConstants.displayWidth / 2, 20, 0xff0000)
+        //     .setScrollFactor(0);
+        // const rectangle = new Rectangle(this, 3 * CofigConstants.displayWidth / 4 - 20, 20, CofigConstants.displayWidth / 2, 20, 0xff0000)
+        // rectangle.setScrollFactor(0);
     }
 
     update() {
@@ -47,6 +59,10 @@ class MyGame extends Phaser.Scene {
         if (this.prayer.isHit(this.enemy)) {
             console.log('hit');
         }
+        this.parameters.addToku(0.01);
+        this.tokBar.width = this.parameters.getToku();
+        FrameCounter.onUpdate();
+        this.enemy.onUpdate(this);
     }
 
 }

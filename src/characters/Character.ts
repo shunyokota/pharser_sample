@@ -1,8 +1,25 @@
 import Phaser from "phaser";
 import GameObject from "~/gameObjects/GameObject";
+import {Direction} from "~/consts/Directions";
 
 export default abstract class Character extends GameObject{
-    protected image: Phaser.GameObjects.Image;
+
+    public go(direction: Direction) {
+        switch (direction) {
+            case 'up' :
+                this.goUp();
+                break;
+            case 'down':
+                this.goDown();
+                break;
+            case 'left':
+                this.goLeft();
+                break;
+            case 'right':
+                this.goRight();
+                break;
+        }
+    }
 
     public goRight() {
         this.x++;
