@@ -4,6 +4,8 @@ import {Direction} from "~/consts/Directions";
 
 export default abstract class Character extends GameObject{
 
+    protected speed:number = 1;
+
     public go(direction: Direction) {
         switch (direction) {
             case 'up' :
@@ -25,7 +27,7 @@ export default abstract class Character extends GameObject{
         if (this.isHitSomeOnRight()) {
             return;
         }
-        this.x++;
+        this.x += this.speed;
         this.image.setX(this.x);
     }
 
@@ -33,7 +35,7 @@ export default abstract class Character extends GameObject{
         if (this.isHitSomeOnLeft()) {
             return;
         }
-        this.x--;
+        this.x -= this.speed;
         this.image.setX(this.x);
     }
 
@@ -41,7 +43,7 @@ export default abstract class Character extends GameObject{
         if (this.isHitSomeOnTop()) {
             return;
         }
-        this.y--;
+        this.y -= this.speed;
         this.image.setY(this.y);
     }
 
@@ -49,7 +51,7 @@ export default abstract class Character extends GameObject{
         if (this.isHitSomeOnBottom()) {
             return;
         }
-        this.y++;
+        this.y += this.speed;
         this.image.setY(this.y);
     }
 }

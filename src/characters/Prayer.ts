@@ -2,6 +2,11 @@ import Phaser from "phaser";
 import Character from "~/characters/Character";
 import ImageManager from "~/loaders/ImageManager";
 import {CofigConstants} from "~/consts/CofigConstants";
+import FrameActionInterface from "~/gameObjects/FrameActionInterface";
+import Enemy from "~/characters/Enemy";
+import Parameters from "~/Parameters";
+import FrameCounter from "~/frame/FrameCounter";
+import {MyGame} from "~/index";
 
 export default class Prayer extends Character {
 
@@ -17,5 +22,13 @@ export default class Prayer extends Character {
             yoyo: true,
             loop: -1
         });
+    }
+
+    public onUpdate(scene: MyGame) {
+        if (FrameCounter.isFrameChanged()) {
+            Parameters.subtractToku(
+                this.getHitObjects().filter(obj => obj instanceof Enemy).length * 5
+            );
+        }
     }
 }

@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import GameObjectsManager from "~/gameObjects/GameObjectsManager";
+import {MyGame} from "~/index";
 
 export default class GameObject {
     public readonly id: number;
@@ -18,22 +19,18 @@ export default class GameObject {
         GameObjectsManager.add(this);
     }
 
+    public onUpdate(scene: MyGame) {}
+
+    public getX(): number {
+        return this.x;
+    }
+
+    public getY(): number {
+        return this.y;
+    }
+
     public isHit(target: GameObject): boolean {
-        const thisXStart = this.x - this.width / 2;
-        const thisXEnd = this.x + this.width / 2;
-        const targetXStart = target.x - target.width / 2;
-        const targetXEnd = target.x + target.width / 2;
-        const xWrapped =  (thisXStart <= targetXStart && targetXStart <= thisXEnd) ||
-            (thisXStart <= targetXEnd && targetXEnd <= thisXEnd);
-
-        const thisYStart = this.y - this.height / 2;
-        const thisYEnd = this.y + this.height / 2;
-        const targetYStart = target.y - target.height / 2;
-        const targetYEnd = target.y + target.height / 2;
-        const yWrapped =  (thisYStart <= targetYStart && targetYStart <= thisYEnd) ||
-            (thisYStart <= targetYEnd && targetYEnd <= thisYEnd);
-
-        return xWrapped && yWrapped;
+        return this.isHitLeft(target) || this.isHitRight(target) || this.isHitTop(target) || this.isHitBottom(target);
     }
 
     public isHitLeft(target: GameObject): boolean {
@@ -88,7 +85,6 @@ export default class GameObject {
         return this.isTopWrapped(target) || this.isBottomWrapped(target);
     }
 
-
     public isHitSomeOnTop(): boolean {
         return this.isHitSomeOnSomeDirection(
             ( some) => {
@@ -119,6 +115,10 @@ export default class GameObject {
                 return this.isHitRight(some)
             }
         );
+    }
+
+    public getHitObjects(): GameObject[] {
+        return GameObjectsManager.getObjects().filter((obj) => this.isHit(obj));
     }
 
     private isHitSomeOnSomeDirection(

@@ -9,10 +9,11 @@ import Rectangle = Phaser.GameObjects.Rectangle;
 import Parameters from "~/Parameters";
 import FrameCounter from "~/frame/FrameCounter";
 import Wall from "~/things/Wall";
+import GameObjectsManager from "~/gameObjects/GameObjectsManager";
 
-class MyGame extends Phaser.Scene {
+export class MyGame extends Phaser.Scene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-    private prayer: Prayer;
+    public prayer: Prayer;
     private enemy: Enemy;
     private parameters: Parameters;
     private tokBar: Rectangle;
@@ -30,7 +31,7 @@ class MyGame extends Phaser.Scene {
         this.enemy = new Enemy(this)
         new Wall(this);
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.parameters = new Parameters();
+        // this.parameters = new Parameters();
 
         this.tokBar = this.add.rectangle(3 * CofigConstants.displayWidth / 4 - 20, 20, 0, 20, 0xff0000).setScrollFactor(0);
         // new Rectangle(this, 3 * CofigConstants.displayWidth / 4 - 20, 20, CofigConstants.displayWidth / 2, 20, 0xff0000)
@@ -56,13 +57,12 @@ class MyGame extends Phaser.Scene {
         {
             this.prayer.goDown();
         }
-        if (this.prayer.isHit(this.enemy)) {
-            console.log('hit');
-        }
-        this.parameters.addToku(0.01);
-        this.tokBar.width = this.parameters.getToku();
+        Parameters.addToku(0.01);
+        this.tokBar.width = Parameters.getToku();
         FrameCounter.onUpdate();
-        this.enemy.onUpdate(this);
+        GameObjectsManager.getObjects().forEach((obj) => {
+            obj.onUpdate(this);
+        })
     }
 
 }
