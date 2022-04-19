@@ -10,6 +10,9 @@ import Parameters from "~/Parameters";
 import FrameCounter from "~/frame/FrameCounter";
 import Wall from "~/things/Wall";
 import GameObjectsManager from "~/gameObjects/GameObjectsManager";
+import mapCsv from "~/maps/1.csv";
+import MapLoader from "~/mapLoaders/MapLoader";
+import {map} from "lodash";
 
 export class MyGame extends Phaser.Scene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -27,9 +30,11 @@ export class MyGame extends Phaser.Scene {
     }
 
     create() {
-        this.prayer = new Prayer(this);
-        this.enemy = new Enemy(this)
-        new Wall(this);
+        const mapLoader = new MapLoader(this, mapCsv);
+        console.log(mapCsv);
+        this.prayer = mapLoader.getPrayer();
+        // this.enemy = new Enemy(this)
+        // new Wall(this, 300, 600);
         this.cursors = this.input.keyboard.createCursorKeys();
         // this.parameters = new Parameters();
 
@@ -41,19 +46,19 @@ export class MyGame extends Phaser.Scene {
     }
 
     update() {
-        if (this.cursors.left.isDown && !this.prayer.isHitLeft(this.enemy))
+        if (this.cursors.left.isDown)
         {
             this.prayer.goLeft();
         }
-        if (this.cursors.right.isDown && !this.prayer.isHitRight(this.enemy))
+        if (this.cursors.right.isDown)
         {
             this.prayer.goRight();
         }
-        if (this.cursors.up.isDown && !this.prayer.isHitTop(this.enemy))
+        if (this.cursors.up.isDown)
         {
             this.prayer.goUp();
         }
-        if (this.cursors.down.isDown && !this.prayer.isHitBottom(this.enemy))
+        if (this.cursors.down.isDown)
         {
             this.prayer.goDown();
         }

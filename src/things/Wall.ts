@@ -4,8 +4,8 @@ import {CofigConstants} from "~/consts/CofigConstants";
 import ImageManager from "~/loaders/ImageManager";
 
 export default class Wall extends GameObject {
-    public constructor(scene: Phaser.Scene) {
-        super(600, 200, CofigConstants.cellSize, CofigConstants.cellSize);
-        this.image = scene.add.image(600, 200, ImageManager.enemy.getKey()).setDisplaySize(CofigConstants.cellSize, CofigConstants.cellSize);
+    public constructor(scene: Phaser.Scene, x: number, y :number) {
+        super(x, y, CofigConstants.cellSize, CofigConstants.cellSize);
+        this.image = scene.add.image(x, y, ImageManager.enemy.getKey()).setDisplaySize(CofigConstants.cellSize, CofigConstants.cellSize);
     }
 }

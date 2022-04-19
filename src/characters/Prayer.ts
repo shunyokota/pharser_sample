@@ -10,9 +10,9 @@ import {MyGame} from "~/index";
 
 export default class Prayer extends Character {
 
-    public constructor(scene: Phaser.Scene) {
-        super(400, 150, CofigConstants.cellSize, CofigConstants.cellSize);
-        this.image = scene.add.image(400, 150, ImageManager.prayer.getKey()).setDisplaySize(CofigConstants.cellSize, CofigConstants.cellSize).setAngle(-40);
+    public constructor(scene: Phaser.Scene, x: number, y :number) {
+        super(x, y, CofigConstants.cellSize, CofigConstants.cellSize);
+        this.image = scene.add.image(x, y, ImageManager.prayer.getKey()).setDisplaySize(CofigConstants.cellSize, CofigConstants.cellSize).setAngle(-40);
         scene.cameras.main.startFollow(this.image);
 
         scene.tweens.add({

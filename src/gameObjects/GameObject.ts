@@ -19,7 +19,8 @@ export default class GameObject {
         GameObjectsManager.add(this);
     }
 
-    public onUpdate(scene: MyGame) {}
+    public onUpdate(scene: MyGame) {
+    }
 
     public getX(): number {
         return this.x;
@@ -34,60 +35,69 @@ export default class GameObject {
     }
 
     public isHitLeft(target: GameObject): boolean {
-        return this.isYWrapped(target) && this.isLeftWrapped(target);
+        return this.isYWrapped(target, false) && this.isLeftWrapped(target);
     }
 
     public isHitRight(target: GameObject): boolean {
-        return this.isYWrapped(target) && this.isRightWrapped(target);
+        return this.isYWrapped(target, false) && this.isRightWrapped(target);
     }
 
     public isHitTop(target: GameObject): boolean {
-        return this.isXWrapped(target) && this.isTopWrapped(target);
+        return this.isXWrapped(target, false) && this.isTopWrapped(target);
     }
 
     public isHitBottom(target: GameObject): boolean {
-        return this.isXWrapped(target) && this.isBottomWrapped(target);
+        return this.isXWrapped(target, false) && this.isBottomWrapped(target);
     }
 
-    private isLeftWrapped(target: GameObject): boolean {
+    private isLeftWrapped(target: GameObject, strict: boolean = true): boolean {
         const thisXStart = this.x - this.width / 2;
         const thisXEnd = this.x + this.width / 2;
         const targetXEnd = target.x + target.width / 2;
-        return (thisXStart <= targetXEnd && targetXEnd <= thisXEnd);
+        return strict ? (thisXStart <= targetXEnd && targetXEnd <= thisXEnd) :
+            (thisXStart < targetXEnd && targetXEnd <= thisXEnd);
     }
 
-    private isRightWrapped(target: GameObject): boolean {
+    private isRightWrapped(target: GameObject, strict: boolean = true): boolean {
         const thisXStart = this.x - this.width / 2;
         const thisXEnd = this.x + this.width / 2;
         const targetXStart = target.x - target.width / 2;
-        return (thisXStart <= targetXStart && targetXStart <= thisXEnd);
+        return strict ? (thisXStart <= targetXStart && targetXStart <= thisXEnd) :
+            (thisXStart <= targetXStart && targetXStart < thisXEnd);
     }
 
-    private isXWrapped(target: GameObject): boolean {
-        return this.isLeftWrapped(target) || this.isRightWrapped(target);
+    private isXWrapped(target: GameObject, strict: boolean = true): boolean {
+        return this.isLeftWrapped(target, strict) || this.isRightWrapped(target, strict);
     }
 
-    private isTopWrapped(target: GameObject): boolean {
+    private isTopWrapped(target: GameObject, strict: boolean = true): boolean {
         const thisYStart = this.y - this.height / 2;
         const thisYEnd = this.y + this.height / 2;
         const targetYEnd = target.y + target.height / 2;
-        return (thisYStart <= targetYEnd && targetYEnd <= thisYEnd);
+        return strict ?
+            (thisYStart <= targetYEnd && targetYEnd <= thisYEnd) :
+            (thisYStart < targetYEnd && targetYEnd <= thisYEnd)
     }
 
-    private isBottomWrapped(target: GameObject): boolean {
+    private isBottomWrapped(target: GameObject, strict: boolean = true): boolean {
         const thisYStart = this.y - this.height / 2;
         const thisYEnd = this.y + this.height / 2;
         const targetYStart = target.y - target.height / 2;
-        return (thisYStart <= targetYStart && targetYStart <= thisYEnd);
+        return  strict ? (thisYStart <= targetYStart && targetYStart <= thisYEnd) :
+            (thisYStart <= targetYStart && targetYStart < thisYEnd);
     }
 
-    private isYWrapped(target: GameObject): boolean {
-        return this.isTopWrapped(target) || this.isBottomWrapped(target);
+    private isYWrapped(target: GameObject, strict: boolean = true): boolean {
+        return this.isTopWrapped(target, strict) || this.isBottomWrapped(target, strict);
     }
 
     public isHitSomeOnTop(): boolean {
         return this.isHitSomeOnSomeDirection(
-            ( some) => {
+            (some) => {
+                if (this.isHitTop(some)) {
+                    console.log(some);
+                    console.log(this)
+                }
                 return this.isHitTop(some)
             }
         );
@@ -95,7 +105,7 @@ export default class GameObject {
 
     public isHitSomeOnBottom(): boolean {
         return this.isHitSomeOnSomeDirection(
-            ( some) => {
+            (some) => {
                 return this.isHitBottom(some)
             }
         );
@@ -103,7 +113,7 @@ export default class GameObject {
 
     public isHitSomeOnLeft(): boolean {
         return this.isHitSomeOnSomeDirection(
-            ( some) => {
+            (some) => {
                 return this.isHitLeft(some)
             }
         );
@@ -111,7 +121,7 @@ export default class GameObject {
 
     public isHitSomeOnRight(): boolean {
         return this.isHitSomeOnSomeDirection(
-            ( some) => {
+            (some) => {
                 return this.isHitRight(some)
             }
         );

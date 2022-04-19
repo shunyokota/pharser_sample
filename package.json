@@ -25,6 +25,7 @@
     "@types/lodash": "^4.14.181",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^4.0.0",
+    "csv-loader": "^3.0.3",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "lodash": "^4.17.21",

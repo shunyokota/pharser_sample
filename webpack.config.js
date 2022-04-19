@@ -20,6 +20,10 @@ module.exports = {
                 }
             },
             {
+                test: /\.(csv|tsv)$/,
+                use: 'csv-loader'
+            },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
