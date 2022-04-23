@@ -12,7 +12,7 @@ import Wall from "~/things/Wall";
 import GameObjectsManager from "~/gameObjects/GameObjectsManager";
 import mapCsv from "~/maps/1.csv";
 import MapLoader from "~/mapLoaders/MapLoader";
-import {map} from "lodash";
+import _ from "lodash";
 
 export class MyGame extends Phaser.Scene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -20,6 +20,7 @@ export class MyGame extends Phaser.Scene {
     private enemy: Enemy;
     private parameters: Parameters;
     private tokBar: Rectangle;
+    private mapLoader: MapLoader;
 
     constructor() {
         super('sample-scene');
@@ -30,9 +31,8 @@ export class MyGame extends Phaser.Scene {
     }
 
     create() {
-        const mapLoader = new MapLoader(this, mapCsv);
-        console.log(mapCsv);
-        this.prayer = mapLoader.getPrayer();
+        this.mapLoader = new MapLoader(this, mapCsv);
+        this.prayer = this.mapLoader.getPrayer();
         // this.enemy = new Enemy(this)
         // new Wall(this, 300, 600);
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -43,6 +43,7 @@ export class MyGame extends Phaser.Scene {
         //     .setScrollFactor(0);
         // const rectangle = new Rectangle(this, 3 * CofigConstants.displayWidth / 4 - 20, 20, CofigConstants.displayWidth / 2, 20, 0xff0000)
         // rectangle.setScrollFactor(0);
+        console.log(GameObjectsManager.getObjects().length);
     }
 
     update() {
@@ -65,6 +66,19 @@ export class MyGame extends Phaser.Scene {
         Parameters.addToku(0.01);
         this.tokBar.width = Parameters.getToku();
         FrameCounter.onUpdate();
+        if (FrameCounter.isFrameChanged()) {
+            console.log(GameObjectsManager.getObjects().length);
+            const x = _.random(0, this.mapLoader.getWidth() * CofigConstants.cellSize);
+            const y = _.random(0, this.mapLoader.getHeight() * CofigConstants.cellSize);
+            // console.log(x);
+            // console.log(y);
+            const wrapped = GameObjectsManager.getObjects().some((obj) => {
+                return obj.isHitAt(x, y, CofigConstants.cellSize, CofigConstants.cellSize);
+            });
+            if (!wrapped && GameObjectsManager.getObjects().length < 1000) {
+                const enemy = new Enemy(this, x, y);
+            }
+        }
         GameObjectsManager.getObjects().forEach((obj) => {
             obj.onUpdate(this);
         })

@@ -10,15 +10,18 @@ export default class GameObject {
     protected height: number;
     protected image: Phaser.GameObjects.Image;
 
-    public constructor(x: number, y: number, width: number, height: number) {
+    public constructor(x: number, y: number, width: number, height: number, empty: boolean = false) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.id = GameObjectsManager.nextId();
-        GameObjectsManager.add(this);
+        if (!empty) {
+            this.id = GameObjectsManager.nextId();
+            GameObjectsManager.add(this);
+        }
     }
 
+    // 継承クラスで上書き
     public onUpdate(scene: MyGame) {
     }
 
@@ -28,6 +31,11 @@ export default class GameObject {
 
     public getY(): number {
         return this.y;
+    }
+
+    public isHitAt(x: number, y: number, width: number, height: number): boolean {
+        const obj = new GameObject(x, y, width, height, true)
+        return this.isHit(obj);
     }
 
     public isHit(target: GameObject): boolean {
@@ -94,10 +102,6 @@ export default class GameObject {
     public isHitSomeOnTop(): boolean {
         return this.isHitSomeOnSomeDirection(
             (some) => {
-                if (this.isHitTop(some)) {
-                    console.log(some);
-                    console.log(this)
-                }
                 return this.isHitTop(some)
             }
         );

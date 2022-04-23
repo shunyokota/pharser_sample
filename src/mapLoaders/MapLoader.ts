@@ -5,6 +5,9 @@ import Prayer from "~/characters/Prayer";
 
 export default class MapLoader {
     private prayer: Prayer;
+    private readonly width: number;
+    private readonly height: number;
+
     constructor(scene: Phaser.Scene, data: string[][]) {
         data.forEach((row, rowNum) => {
             row.forEach((val, colNum) => {
@@ -15,9 +18,21 @@ export default class MapLoader {
                 }
             });
         });
+        this.height = data.length;
+        this.width = data[0].length;
     }
 
     public getPrayer(): Prayer {
         return this.prayer;
+    }
+
+    public getHeight(): number
+    {
+        return this.height;
+    }
+
+    public getWidth(): number
+    {
+        return this.width;
     }
 }

@@ -10,9 +10,9 @@ export default class Enemy extends Character {
 
     private movingDirection: Direction | null = null;
 
-    public constructor(scene: Phaser.Scene) {
-        super(200, 200, CofigConstants.cellSize, CofigConstants.cellSize);
-        this.image = scene.add.image(200, 200, ImageManager.enemy.getKey()).setDisplaySize(CofigConstants.cellSize, CofigConstants.cellSize);
+    public constructor(scene: Phaser.Scene, x: number, y: number) {
+        super(x, y, CofigConstants.cellSize, CofigConstants.cellSize);
+        this.image = scene.add.image(x, y, ImageManager.enemy.getKey()).setDisplaySize(CofigConstants.cellSize, CofigConstants.cellSize);
         this.speed = 2;
     }
 

@@ -23,6 +23,14 @@ export default abstract class Character extends GameObject{
         }
     }
 
+    protected changeImage(newImage: Phaser.GameObjects.Image) {
+        this.image.setVisible(false);
+        newImage.setVisible(true);
+        newImage.x = this.x;
+        newImage.y = this.y;
+        this.image = newImage;
+    }
+
     public goRight() {
         if (this.isHitSomeOnRight()) {
             return;

@@ -10,9 +10,15 @@ import {MyGame} from "~/index";
 
 export default class Prayer extends Character {
 
+    private normalImage: Phaser.GameObjects.Image;
+    private damagedImage: Phaser.GameObjects.Image;
+    private isDamaged :boolean = false;
+
     public constructor(scene: Phaser.Scene, x: number, y :number) {
         super(x, y, CofigConstants.cellSize, CofigConstants.cellSize);
-        this.image = scene.add.image(x, y, ImageManager.prayer.getKey()).setDisplaySize(CofigConstants.cellSize, CofigConstants.cellSize).setAngle(-40);
+        this.normalImage = scene.add.image(x, y, ImageManager.prayer.getKey()).setDisplaySize(CofigConstants.cellSize, CofigConstants.cellSize).setAngle(-40);
+        this.damagedImage = scene.add.image(x, y, ImageManager.prayerDamaged.getKey()).setDisplaySize(CofigConstants.cellSize, CofigConstants.cellSize).setAngle(-40).setVisible(false);
+        this.image = this.normalImage;
         scene.cameras.main.startFollow(this.image);
 
         scene.tweens.add({
@@ -26,9 +32,23 @@ export default class Prayer extends Character {
 
     public onUpdate(scene: MyGame) {
         if (FrameCounter.isFrameChanged()) {
+            const hitCount = this.getHitObjects().filter(obj => obj instanceof Enemy).length;
+            if (hitCount === 0) {
+                if (this.isDamaged) {
+                    this.changeImage(this.normalImage);
+                    scene.cameras.main.startFollow(this.image);
+                    this.isDamaged = false;
+                }
+                return;
+            }
             Parameters.subtractToku(
-                this.getHitObjects().filter(obj => obj instanceof Enemy).length * 5
+                hitCount * 5
             );
+            if (!this.isDamaged) {
+                this.changeImage(this.damagedImage);
+                scene.cameras.main.startFollow(this.image);
+                this.isDamaged = true;
+            }
         }
     }
 }
